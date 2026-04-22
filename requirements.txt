@@ -1,0 +1,21 @@
+joblib
+pandas
+numpy
+matplotlib
+streamlit
+flask
+ipykernel
+scikit-learn
+seaborn
+sentence-transformers>=2.2.0   # For SBERT (Resumes/JDs to Vectors)
+# --- API & Serving ---
+fastapi>=0.75.0                # To create the API endpoints
+uvicorn>=0.17.0                # Server to run FastAPI
+pypdf>=3.0.0                   # To parse text from PDF resumes
+torchvision
+torchinfo
+opencv-python
+Pillow==11.0.0
+open_clip_torch
+annoy
+hf_xet
