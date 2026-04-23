@@ -12,3 +12,6 @@ Pillow==11.1.0
 open_clip_torch
 annoy
 hf_xet
+gdown
+google-api-python-client
+google-auth
