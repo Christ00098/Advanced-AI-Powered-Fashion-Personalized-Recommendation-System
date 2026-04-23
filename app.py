@@ -25,8 +25,18 @@ model, tokenizer, device, df, index = startup_resources()
 raw_df = utils.load_inventory()
 # --- Custom Component: Product Card ---
 def product_card(row):
-    if os.path.exists(row['image_path']):
-        st.image(Image.open(row['image_path']), width='stretch')
+    image_path = row['image_path']
+    
+    if image_path and isinstance(image_path, str):
+        if image_path.startswith("http"):  # ✅ It's a URL (Google Drive)
+            st.image(image_path, width=200)
+        elif os.path.exists(image_path):   # ✅ It's a local file
+            st.image(Image.open(image_path), width=200)
+        else:
+            st.caption("🖼️ Image not available")
+    else:
+        st.caption("🖼️ Image not available")
+        
     st.markdown(f"**{row['price_tag']}**")
     st.caption(f"{row['productDisplayName'][:20]}... \n\n Size: {row['standard_size']}")
 
