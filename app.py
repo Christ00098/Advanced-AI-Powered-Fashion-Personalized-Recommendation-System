@@ -24,13 +24,14 @@ model, tokenizer, device, df, index = startup_resources()
 
 raw_df = utils.load_inventory()
 # --- Custom Component: Product Card ---
+# NEW - works for both URLs and local files
 def product_card(row):
     image_path = row['image_path']
     
     if image_path and isinstance(image_path, str):
-        if image_path.startswith("http"):  # ✅ It's a URL (Google Drive)
+        if image_path.startswith("http"):  # Hugging Face URL
             st.image(image_path, width=200)
-        elif os.path.exists(image_path):   # ✅ It's a local file
+        elif os.path.exists(image_path):   # local file fallback
             st.image(Image.open(image_path), width=200)
         else:
             st.caption("🖼️ Image not available")
