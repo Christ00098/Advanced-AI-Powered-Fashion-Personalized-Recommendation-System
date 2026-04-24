@@ -220,6 +220,13 @@ header, [data-testid="stToolbar"] {
     color: rgba(197,168,105,0.2);
 }
 
+            /* Hide sidebar collapse button tooltip text */
+[data-testid="collapsedControl"] span,
+button[kind="header"] span,
+[data-testid="stSidebarCollapseButton"] span {
+    display: none !important;
+}
+            
 /* ── Hide Streamlit keyboard navigation text ── */
 [data-testid="InputInstructions"],
 span[class*="instructionsDisplay"],
