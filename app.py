@@ -27,8 +27,16 @@ html, body, [data-testid="stAppViewContainer"] {
 }
 
 /* ── Hide Streamlit chrome ── */
-#MainMenu, footer, header, [data-testid="stToolbar"],
-[data-testid="stDecoration"] { display: none !important; }
+footer, [data-testid="stDecoration"] { display: none !important; }
+
+/* Style the header to match dark theme instead of hiding it */
+header, [data-testid="stToolbar"] {
+    background: #0a0a0f !important;
+}
+[data-testid="stToolbar"] button, [data-testid="stToolbar"] svg {
+    color: rgba(197,168,105,0.6) !important;
+    fill: rgba(197,168,105,0.6) !important;
+}
 
 /* ── Main container ── */
 [data-testid="stAppViewContainer"] > .main {
