@@ -150,8 +150,9 @@ html, body, [data-testid="stAppViewContainer"] {
 }
 .product-card-img {
     width: 100%;
-    aspect-ratio: 3/4;
+    height: 320px;
     object-fit: cover;
+    object-position: top center;
     display: block;
     background: #1a1a27;
 }
@@ -202,13 +203,23 @@ html, body, [data-testid="stAppViewContainer"] {
 /* ── Placeholder image ── */
 .img-placeholder {
     width: 100%;
-    aspect-ratio: 3/4;
+    height: 320px;
     background: linear-gradient(135deg, #1a1a27 0%, #12121c 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2.5rem;
     color: rgba(197,168,105,0.2);
+}
+
+/* ── Hide Streamlit keyboard navigation text ── */
+[data-testid="InputInstructions"],
+span[class*="instructionsDisplay"],
+div[class*="instructionsDisplay"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
 }
 
 /* ── Buttons ── */
