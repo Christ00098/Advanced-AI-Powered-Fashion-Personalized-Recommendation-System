@@ -347,7 +347,7 @@ st.sidebar.markdown("""
 """, unsafe_allow_html=True)
 
 menu = ["🏠  Home Gallery", "🔎  Advanced Search", "👔  Attire Architect"]
-choice = st.sidebar.selectbox("", menu, label_visibility="collapsed")
+choice = st.sidebar.selectbox("Menu", menu, label_visibility="collapsed")
 
 
 # ── PRODUCT CARD ─────────────────────────────────────────────────────────────────
