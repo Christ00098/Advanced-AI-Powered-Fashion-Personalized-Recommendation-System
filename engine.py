@@ -14,7 +14,7 @@ def search_with_filters(query_text, gender, size, price_range, article, df, inde
     """Core Search: Logic for 5 filters + Semantic Search."""
     # 1. Hard Filtering (Gender, Size, Article)
     mask = (df['gender'].str.lower() == gender.lower()) & \
-           (df['standard_size'].astype(str) == str(size)) & \
+           (df['available_size'].astype(str) == str(size)) & \
            (df['articleType'].str.lower() == article.lower())
     
     # Extract numeric price for range filtering

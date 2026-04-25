@@ -369,8 +369,8 @@ choice = st.sidebar.selectbox("Menu", menu, label_visibility="collapsed")
 def product_card(row):
     image_path = row.get('image_path', None)
     name = str(row.get('productDisplayName', ''))[:38]
-    price = str(row.get('price_tag', ''))
-    size = str(row.get('standard_size', ''))
+    price = str(row.get('price', ''))
+    size = str(row.get('available_size', ''))
     article = str(row.get('articleType', ''))
 
     # Build image HTML
@@ -441,7 +441,7 @@ elif "🔎" in choice:
     col1, col2 = st.columns(2, gap="large")
     with col1:
         s_gender = st.selectbox("Gender", options=df['gender'].unique())
-        s_size = st.selectbox("UK Size", options=sorted(df['standard_size'].astype(str).unique()))
+        s_size = st.selectbox("Size", options=sorted(utils.get_all_sizes(df).astype(str).unique()))
     with col2:
         s_type = st.selectbox("Article Type", options=sorted(df['articleType'].unique()))
         s_price = st.slider("Price Range (£)", 0, 300, (20, 150))
@@ -480,7 +480,7 @@ elif "👔" in choice:
     col_a, col_b = st.columns(2, gap="large")
     with col_a:
         c_gender = st.selectbox("Gender", options=df['gender'].unique())
-        c_size = st.selectbox("UK Size", options=sorted(df['standard_size'].astype(str).unique()))
+        c_size = st.selectbox("Size", options=sorted(utils.get_all_sizes(df).astype(str).unique()))
         outfit_color = st.text_input("Color Theme  (e.g. Earth Tones, Monochrome)")
     with col_b:
         top_type = st.selectbox("Top", ["Tshirts", "Shirts", "Dresses"])
