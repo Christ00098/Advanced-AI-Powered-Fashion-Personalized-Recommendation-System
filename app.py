@@ -30,6 +30,8 @@ if "nav" not in st.session_state:
 # ── GLOBAL CSS ─────────────────────────────────────────────────────────────────
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+""", unsafe_allow_html=True)
+st.html("""
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -211,7 +213,7 @@ hr { border-color: rgba(197,168,105,0.15) !important; }
 ::-webkit-scrollbar-track { background: #0a0a0f; }
 ::-webkit-scrollbar-thumb { background: rgba(197,168,105,0.3); border-radius: 2px; }
 </style>
-""", unsafe_allow_html=True)
+""")
 
 
 # ── LOAD RESOURCES ─────────────────────────────────────────────────────────────
