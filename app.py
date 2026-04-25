@@ -212,6 +212,16 @@ hr { border-color: rgba(197,168,105,0.15) !important; }
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: #0a0a0f; }
 ::-webkit-scrollbar-thumb { background: rgba(197,168,105,0.3); border-radius: 2px; }
+
+/* Hide iframe border on landing page */
+iframe {
+    border: none !important;
+    display: block !important;
+}
+
+[data-testid="stAppViewContainer"] {
+    overflow: hidden !important;
+}
 </style>
 """)
 
