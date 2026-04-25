@@ -14,11 +14,11 @@ def search_with_filters(query_text, gender, size, price_range, article, df, inde
     """Core Search: Logic for 5 filters + Semantic Search."""
     # 1. Hard Filtering (Gender, Size, Article)
     mask = (df['gender'].str.lower() == gender.lower()) & \
-           (df['available_size'].astype(str) == str(size)) & \
+           (df['available_sizes'].astype(str) == str(size)) & \
            (df['articleType'].str.lower() == article.lower())
     
     # Extract numeric price for range filtering
-    df['temp_price'] = df['price_tag'].str.replace('£', '').astype(float)
+    df['temp_price'] = df['price'].str.replace('£', '').astype(float)
     mask = mask & (df['temp_price'] >= price_range[0]) & (df['temp_price'] <= price_range[1])
     
     filtered_df = df[mask].copy()
