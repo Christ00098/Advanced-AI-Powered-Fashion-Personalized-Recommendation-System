@@ -697,7 +697,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
 </body>
 </html>
-""", height=6200, scrolling=True)
+""", height=6200, scrolling=False)
 
     # Listen for the "Launch App" message from the iframe
     # Use a button below the landing page as reliable fallback
