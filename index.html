@@ -259,59 +259,54 @@ nav {
 }
 .cs-cta:hover { background: #d4b97a; transform: translateY(-1px); }
 
-/* Right outfit visual */
+/* Right outfit panel - card grid */
 .cs-outfit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
   background: var(--dark3);
   border: 1px solid var(--gold-border);
-  border-radius: 16px;
-  padding: 2rem 1.5rem;
+  border-radius: 12px;
+  padding: 1.2rem;
   position: relative;
   overflow: hidden;
 }
 .cs-outfit::before {
   content: '';
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 50% 30%, rgba(197,168,105,0.05) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 50% 30%, rgba(197,168,105,0.04) 0%, transparent 60%);
+  pointer-events: none;
 }
-.cs-piece {
-  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-  width: 100%;
+.cs-outfit-hdr {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); text-align: center;
+  margin-bottom: 0.9rem; padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(197,168,105,0.15);
 }
-.cs-piece-wrap {
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid rgba(197,168,105,0.12);
-  width: 100%;
-  position: relative;
+.cs-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+.cs-card {
   background: var(--dark2);
+  border: 1px solid rgba(197,168,105,0.12);
+  border-radius: 8px; overflow: hidden;
+  display: flex; flex-direction: column;
 }
-.cs-piece-wrap.tall   { height: 200px; }
-.cs-piece-wrap.medium { height: 160px; }
-.cs-piece-wrap.short  { height: 120px; }
-.cs-piece-img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: top center;
-  display: block;
+.cs-card-lbl {
+  font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold); text-align: center;
+  padding: 0.35rem 0.3rem;
+  border-bottom: 1px solid rgba(197,168,105,0.1); flex-shrink: 0;
 }
-.cs-piece-ph {
+.cs-card-img-wrap { overflow: hidden; height: 180px; }
+.cs-card-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+.cs-card-ph {
   width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 3rem; color: rgba(197,168,105,0.25);
+  font-size: 2.2rem;
   background: linear-gradient(135deg, #1a1a27 0%, #12121c 100%);
 }
-.cs-piece-lbl {
-  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(197,168,105,0.5); margin-bottom: 0.3rem;
-}
-.cs-connector {
-  display: flex; align-items: center; justify-content: center;
-  padding: 0.4rem 0;
-  color: rgba(197,168,105,0.3); font-size: 1rem;
-  z-index: 1;
+.cs-card-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem; color: var(--gold);
+  text-align: center; padding: 0.4rem 0.3rem;
+  border-top: 1px solid rgba(197,168,105,0.1); flex-shrink: 0;
 }
 
 /* Controls */
@@ -979,6 +974,18 @@ let currentSlide = 0;
 let autoTimer = null;
 
 function buildSlide(outfit) {
+  const cards = outfit.items.map(it => `
+    <div class="cs-card">
+      <div class="cs-card-lbl">${it.label}</div>
+      <div class="cs-card-img-wrap">
+        ${it.img
+          ? `<img class="cs-card-img" src="${it.img}" alt="${it.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\"cs-card-ph\">${it.emoji}</div>'">`
+          : `<div class="cs-card-ph">${it.emoji}</div>`
+        }
+      </div>
+      <div class="cs-card-price">${it.price}</div>
+    </div>
+  `).join('');
   return `
     <div class="carousel-slide">
       <div class="cs-text">
@@ -997,19 +1004,8 @@ function buildSlide(outfit) {
         <a class="cs-cta" href="${STREAMLIT_URL}">Shop This Look →</a>
       </div>
       <div class="cs-outfit">
-        ${outfit.items.map((it, i) => `
-          ${i > 0 ? '<div class="cs-connector">+</div>' : ''}
-          <div class="cs-piece">
-            <div class="cs-piece-wrap ${it.size}">
-              ${it.img
-                ? `<img class="cs-piece-img" src="${it.img}" alt="${it.name}" loading="lazy"
-                     onerror="this.parentElement.innerHTML='<div class=\\"cs-piece-ph\\">${it.emoji}</div>'">`
-                : `<div class="cs-piece-ph">${it.emoji}</div>`
-              }
-            </div>
-            <span class="cs-piece-lbl">${it.label}</span>
-          </div>
-        `).join('')}
+        <div class="cs-outfit-hdr">${outfit.theme} · AI Curated Look</div>
+        <div class="cs-cards">${cards}</div>
       </div>
     </div>
   `;
