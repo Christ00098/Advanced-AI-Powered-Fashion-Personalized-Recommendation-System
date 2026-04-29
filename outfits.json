@@ -1,0 +1,209 @@
+{
+  "outfits": [
+    {
+      "theme": "Smart Casual",
+      "title": "The <em>Urban Classic</em>",
+      "desc": "A timeless combination for the modern man \u2014 relaxed yet refined, perfect for any casual occasion.",
+      "items": [
+        {
+          "label": "Top",
+          "name": "Belmonte Men Check Red Shirts",
+          "price": "\u20b91,295",
+          "emoji": "\ud83d\udc54",
+          "size": "tall",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_01/13748.jpg",
+          "id": 13748
+        },
+        {
+          "label": "Bottom",
+          "name": "Deni Yo Men Washed Blue Jeans",
+          "price": "\u20b91,099",
+          "emoji": "\ud83d\udc56",
+          "size": "medium",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_02/20918.jpg",
+          "id": 20918
+        },
+        {
+          "label": "Footwear",
+          "name": "Buckaroo Men Meztli Brown Casual Sh",
+          "price": "\u20b92,495",
+          "emoji": "\ud83d\udc5f",
+          "size": "short",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_02/17769.jpg",
+          "id": 17769
+        }
+      ]
+    },
+    {
+      "theme": "Casual Weekend",
+      "title": "The <em>Weekend Edit</em>",
+      "desc": "Effortlessly cool weekend dressing \u2014 comfortable fabrics, relaxed silhouettes, easy coordination.",
+      "items": [
+        {
+          "label": "Top",
+          "name": "Puma Men graphic story tee White Ts",
+          "price": "\u20b9899",
+          "emoji": "\ud83d\udc55",
+          "size": "tall",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_01/10061.jpg",
+          "id": 10061
+        },
+        {
+          "label": "Bottom",
+          "name": "Locomotive Men Washed Blue Jeans",
+          "price": "\u20b91,169",
+          "emoji": "\ud83d\udc56",
+          "size": "medium",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_04/31334.jpg",
+          "id": 31334
+        },
+        {
+          "label": "Footwear",
+          "name": "ADIDAS Men's Snova Glide 3M White S",
+          "price": "\u20b96,999",
+          "emoji": "\ud83d\udc5f",
+          "size": "short",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_06/4044.jpg",
+          "id": 4044
+        }
+      ]
+    },
+    {
+      "theme": "Business Casual",
+      "title": "The <em>Power Look</em>",
+      "desc": "Command the room with a polished yet approachable ensemble \u2014 ideal for meetings and client visits.",
+      "items": [
+        {
+          "label": "Top",
+          "name": "U.S. Polo Assn. Men Stripes Blue Sh",
+          "price": "\u20b91,699",
+          "emoji": "\ud83d\udc54",
+          "size": "tall",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_02/17184.jpg",
+          "id": 17184
+        },
+        {
+          "label": "Bottom",
+          "name": "Black Coffee Men Striped Charcoal T",
+          "price": "\u20b91,039",
+          "emoji": "\ud83d\udc56",
+          "size": "medium",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_04/31473.jpg",
+          "id": 31473
+        },
+        {
+          "label": "Footwear",
+          "name": "Lee Cooper Men  Black Formal Shoe",
+          "price": "\u20b92,385",
+          "emoji": "\ud83d\udc5e",
+          "size": "short",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_02/17822.jpg",
+          "id": 17822
+        }
+      ]
+    },
+    {
+      "theme": "Evening Out",
+      "title": "The <em>Night Edit</em>",
+      "desc": "Dress with intention \u2014 rich tones, elevated basics and footwear that makes a statement.",
+      "items": [
+        {
+          "label": "Top",
+          "name": "Genesis Men Blue Solid Shirt",
+          "price": "\u20b91,699",
+          "emoji": "\ud83d\udc54",
+          "size": "tall",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_01/13666.jpg",
+          "id": 13666
+        },
+        {
+          "label": "Bottom",
+          "name": "John Miller Men Striped Brown Trous",
+          "price": "\u20b91,599",
+          "emoji": "\ud83d\udc56",
+          "size": "medium",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_03/26156.jpg",
+          "id": 26156
+        },
+        {
+          "label": "Footwear",
+          "name": "Playboy Men Casual Blue Casual Shoe",
+          "price": "\u20b91,395",
+          "emoji": "\ud83d\udc62",
+          "size": "short",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_01/11822.jpg",
+          "id": 11822
+        }
+      ]
+    },
+    {
+      "theme": "Feminine Casual",
+      "title": "The <em>Easy Chic</em>",
+      "desc": "Light, breezy and effortlessly stylish \u2014 the perfect look for a relaxed day out.",
+      "items": [
+        {
+          "label": "Top",
+          "name": "Jealous 21 Women Purple Peace Top",
+          "price": "\u20b9399",
+          "emoji": "\ud83d\udc5a",
+          "size": "tall",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_08/5782.jpg",
+          "id": 5782
+        },
+        {
+          "label": "Bottom",
+          "name": "Spykar Women Blue Jeans",
+          "price": "\u20b92,249",
+          "emoji": "\ud83d\udc56",
+          "size": "medium",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_07/51356.jpg",
+          "id": 51356
+        },
+        {
+          "label": "Footwear",
+          "name": "Carlton London Women Wedge Silver S",
+          "price": "\u20b91,495",
+          "emoji": "\ud83d\udc61",
+          "size": "short",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_03/2627.jpg",
+          "id": 2627
+        }
+      ]
+    },
+    {
+      "theme": "Dressed Up",
+      "title": "The <em>Evening Grace</em>",
+      "desc": "From dinner to dancing \u2014 a complete look that moves effortlessly from day into evening.",
+      "items": [
+        {
+          "label": "Dress",
+          "name": "Femella Women Purple & Black Dress",
+          "price": "\u20b9850",
+          "emoji": "\ud83d\udc57",
+          "size": "tall",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_05/33997.jpg",
+          "id": 33997
+        },
+        {
+          "label": "Footwear",
+          "name": "Catwalk Women Brown Stilettos",
+          "price": "\u20b91,995",
+          "emoji": "\ud83d\udc60",
+          "size": "short",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_04/33130.jpg",
+          "id": 33130
+        },
+        {
+          "label": "Accessory",
+          "name": "Murcia Women Zoe Brown Handbags",
+          "price": "\u20b91,450",
+          "emoji": "\ud83d\udc5c",
+          "size": "short",
+          "img": "https://huggingface.co/datasets/HOBS-ANALYTICS/fashion-images/resolve/main/batch_01/10247.jpg",
+          "id": 10247
+        }
+      ]
+    }
+  ],
+  "streamlit_url": "https://ai-fashion-recommend-app.streamlit.app"
+}
