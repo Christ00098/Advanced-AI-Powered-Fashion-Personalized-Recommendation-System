@@ -258,7 +258,7 @@ if "active_page" not in st.session_state:
 
 
 # ── TOP NAVIGATION ─────────────────────────────────────────────────────────────
-HOME_URL = "https://hor-layinka.github.io/Advance-AI-Integration-App/"
+HOME_URL = "https://christ00098.github.io/Advanced-AI-Powered-Fashion-Personalized-Recommendation-System/"
 
 search_active   = "active" if st.session_state.active_page == "search"   else ""
 architect_active = "active" if st.session_state.active_page == "architect" else ""
