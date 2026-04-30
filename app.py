@@ -1,112 +1,134 @@
 import streamlit as st
-from PIL import Image
 from annoy import AnnoyIndex
 import engine
 import utils
 import pandas as pd
 import os
- 
+
 st.set_page_config(
     page_title="Advanced AI-Powered Fashion Personalized Recommendation System",
     page_icon="✨",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
- 
+
 # ── GLOBAL CSS ─────────────────────────────────────────────────────────────────
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 """, unsafe_allow_html=True)
- 
+
 st.html("""
 <style>
-/* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
 html, body, [data-testid="stAppViewContainer"] {
     background: #0a0a0f !important;
     color: #f0ece4 !important;
     font-family: 'DM Sans', sans-serif !important;
 }
- 
-/* ── Hide Streamlit chrome ── */
+
 footer, [data-testid="stDecoration"] { display: none !important; }
- 
 header, [data-testid="stToolbar"] { background: #0a0a0f !important; }
-[data-testid="stToolbar"] button, [data-testid="stToolbar"] svg {
-    color: rgba(197,168,105,0.6) !important;
-    fill: rgba(197,168,105,0.6) !important;
-}
- 
-/* ── Main container ── */
+[data-testid="stToolbar"] button svg { fill: rgba(197,168,105,0.6) !important; }
+[data-testid="stSidebar"] { display: none !important; }
+
 [data-testid="stAppViewContainer"] > .main { background: #0a0a0f !important; }
 .block-container { padding: 0 2.5rem 3rem !important; max-width: 1400px !important; }
- 
-/* ── Sidebar ── */
-[data-testid="stSidebar"] {
-    background: #0f0f18 !important;
-    border-right: 1px solid rgba(197,168,105,0.15) !important;
-}
-[data-testid="stSidebar"] * { color: #f0ece4 !important; font-family: 'DM Sans', sans-serif !important; }
-[data-testid="stSidebar"] [data-baseweb="select"] > div {
-    background: rgba(197,168,105,0.07) !important;
-    border: 1px solid rgba(197,168,105,0.25) !important;
-    border-radius: 4px !important; color: #f0ece4 !important;
-}
- 
+
 /* ── Hide keyboard tooltip ── */
 [data-testid="InputInstructions"],
 span[class*="instructionsDisplay"],
-div[class*="instructionsDisplay"],
-[data-testid="collapsedControl"] span,
-[data-testid="stSidebarCollapseButton"] span {
+div[class*="instructionsDisplay"] {
     display: none !important; visibility: hidden !important;
     height: 0 !important; overflow: hidden !important;
 }
- 
+
+/* ── Top Navigation Bar ── */
+.top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 0 1.2rem;
+    border-bottom: 1px solid rgba(197,168,105,0.15);
+    margin-bottom: 0;
+}
+.top-nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 300;
+    letter-spacing: 0.22em; color: #f0ece4;
+    text-transform: uppercase;
+}
+.top-nav-logo span { color: #c5a869; font-style: italic; }
+.top-nav-btns {
+    display: flex; gap: 0.7rem; align-items: center;
+}
+.nav-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    padding: 0.55rem 1.4rem; border-radius: 4px;
+    text-decoration: none; transition: all 0.25s; cursor: pointer;
+    border: 1px solid rgba(197,168,105,0.3); color: rgba(197,168,105,0.7);
+    background: transparent;
+}
+.nav-btn:hover { border-color: #c5a869; color: #c5a869; background: rgba(197,168,105,0.07); }
+.nav-btn.active {
+    background: rgba(197,168,105,0.12);
+    border-color: #c5a869; color: #c5a869;
+}
+.nav-btn-home {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    padding: 0.55rem 1.4rem; border-radius: 4px;
+    text-decoration: none; transition: all 0.25s;
+    border: 1px solid rgba(197,168,105,0.15); color: rgba(240,236,228,0.5);
+    background: transparent; display: inline-block;
+}
+.nav-btn-home:hover { border-color: rgba(197,168,105,0.4); color: rgba(240,236,228,0.8); }
+
 /* ── Hero Banner ── */
 .hero-banner {
-    position: relative; width: 100%; padding: 3rem 0 2rem;
+    position: relative; width: 100%; padding: 2.5rem 0 2rem;
     text-align: center; overflow: hidden; margin-bottom: 0.5rem;
 }
 .hero-banner::before {
     content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(197,168,105,0.12) 0%, transparent 70%);
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(197,168,105,0.1) 0%, transparent 70%);
     pointer-events: none;
 }
 .hero-logo-ring {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 72px; height: 72px; border-radius: 50%;
+    width: 60px; height: 60px; border-radius: 50%;
     border: 1.5px solid rgba(197,168,105,0.6);
-    background: rgba(197,168,105,0.06); margin-bottom: 1rem; font-size: 2rem;
-    box-shadow: 0 0 40px rgba(197,168,105,0.15), inset 0 0 20px rgba(197,168,105,0.05);
+    background: rgba(197,168,105,0.06); margin-bottom: 0.8rem; font-size: 1.6rem;
+    box-shadow: 0 0 40px rgba(197,168,105,0.15);
 }
 .hero-title {
     font-family: 'Cormorant Garamond', serif !important;
-    font-size: clamp(2.4rem, 5vw, 4rem) !important; font-weight: 300 !important;
+    font-size: clamp(1.8rem, 4vw, 3rem) !important; font-weight: 300 !important;
     letter-spacing: 0.18em !important; color: #f0ece4 !important;
     line-height: 1 !important; margin-bottom: 0.4rem !important;
 }
 .hero-title span { color: #c5a869; font-style: italic; }
 .hero-subtitle {
-    font-size: 0.78rem !important; font-weight: 300 !important;
-    letter-spacing: 0.35em !important; color: rgba(197,168,105,0.7) !important;
-    text-transform: uppercase !important; margin-bottom: 1.5rem !important;
+    font-size: 0.68rem !important; font-weight: 300 !important;
+    letter-spacing: 0.3em !important; color: rgba(197,168,105,0.6) !important;
+    text-transform: uppercase !important; margin-bottom: 0 !important;
 }
 .hero-divider {
-    width: 120px; height: 1px;
-    background: linear-gradient(90deg, transparent, #c5a869, transparent); margin: 0 auto;
+    width: 80px; height: 1px;
+    background: linear-gradient(90deg, transparent, #c5a869, transparent);
+    margin: 1rem auto 0;
 }
- 
+
 /* ── Section Header ── */
 .section-header {
     font-family: 'Cormorant Garamond', serif !important;
-    font-size: 1.6rem !important; font-weight: 300 !important;
+    font-size: 1.5rem !important; font-weight: 300 !important;
     letter-spacing: 0.12em !important; color: #f0ece4 !important;
     margin: 2rem 0 1.2rem !important; padding-bottom: 0.6rem !important;
     border-bottom: 1px solid rgba(197,168,105,0.2) !important;
 }
- 
+
 /* ── Product Card ── */
 .product-card {
     background: #12121c; border: 1px solid rgba(197,168,105,0.12);
@@ -134,7 +156,7 @@ div[class*="instructionsDisplay"],
 }
 .product-card-size {
     font-size: 0.68rem; font-weight: 300; color: rgba(197,168,105,0.55);
-    letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.2rem;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.2rem;
 }
 .product-card-badge {
     position: absolute; top: 0.6rem; left: 0.6rem;
@@ -149,8 +171,8 @@ div[class*="instructionsDisplay"],
     display: flex; align-items: center; justify-content: center;
     font-size: 2.5rem; color: rgba(197,168,105,0.2);
 }
- 
-/* ── Buttons ── */
+
+/* ── Streamlit Buttons ── */
 .stButton > button {
     background: transparent !important;
     border: 1px solid rgba(197,168,105,0.4) !important;
@@ -164,10 +186,9 @@ div[class*="instructionsDisplay"],
     border-color: #c5a869 !important;
     box-shadow: 0 0 20px rgba(197,168,105,0.1) !important;
 }
- 
+
 /* ── Inputs ── */
 .stTextInput > div > div > input,
-.stSelectbox > div > div,
 [data-baseweb="select"] > div {
     background: rgba(255,255,255,0.04) !important;
     border: 1px solid rgba(197,168,105,0.2) !important;
@@ -183,35 +204,35 @@ div[class*="instructionsDisplay"],
     letter-spacing: 0.15em !important; text-transform: uppercase !important;
     font-weight: 400 !important;
 }
- 
+
 /* ── Slider ── */
 .stSlider [data-baseweb="slider"] div[role="slider"] {
     background: #c5a869 !important; border-color: #c5a869 !important;
 }
- 
+
 /* ── Page indicator ── */
 .page-indicator {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.9rem; color: rgba(197,168,105,0.6);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.1em; text-align: center; padding-top: 0.5rem;
 }
- 
+
 /* ── Alerts ── */
 .stAlert {
     background: rgba(197,168,105,0.06) !important;
     border: 1px solid rgba(197,168,105,0.2) !important;
     border-radius: 4px !important; color: #f0ece4 !important;
 }
- 
+
 hr { border-color: rgba(197,168,105,0.15) !important; }
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: #0a0a0f; }
 ::-webkit-scrollbar-thumb { background: rgba(197,168,105,0.3); border-radius: 2px; }
 </style>
 """)
- 
- 
-# ── CACHED RESOURCES ────────────────────────────────────────────────────────────
+
+
+# ── LOAD RESOURCES ─────────────────────────────────────────────────────────────
 @st.cache_resource
 def startup_resources():
     model, tokenizer, device = engine.load_ai_model()
@@ -219,50 +240,79 @@ def startup_resources():
     index = AnnoyIndex(768, 'angular')
     index.load("fashion_vector_index.ann")
     return model, tokenizer, device, df, index
- 
+
 model, tokenizer, device, df, index = startup_resources()
- 
-# ── DERIVED OPTIONS ─────────────────────────────────────────────────────────────
+
 all_sizes   = utils.get_all_sizes(df)
 all_colours = ["All"] + sorted(df['baseColour'].dropna().unique().tolist())
 min_price   = int(df['price'].min()) if 'price' in df.columns and df['price'].notna().any() else 0
 max_price   = int(df['price'].max()) if 'price' in df.columns and df['price'].notna().any() else 10000
- 
- 
-# ── HERO BANNER ─────────────────────────────────────────────────────────────────
+
+# ── PAGE STATE ─────────────────────────────────────────────────────────────────
+if "active_page" not in st.session_state:
+    st.session_state.active_page = "search"
+
+
+# ── TOP NAVIGATION ─────────────────────────────────────────────────────────────
+HOME_URL = "https://hor-layinka.github.io/Advance-AI-Integration-App/"
+
+search_active   = "active" if st.session_state.active_page == "search"   else ""
+architect_active = "active" if st.session_state.active_page == "architect" else ""
+
+st.markdown(f"""
+<div class="top-nav">
+    <div class="top-nav-logo">Aura<span>Style</span> AI</div>
+    <div class="top-nav-btns">
+        <a href="{HOME_URL}" class="nav-btn-home" target="_self">← Home</a>
+        <span class="nav-btn {search_active}"
+              onclick="window.location.href='?page=search'"
+              id="btn-search">🔎 &nbsp;Advanced Search</span>
+        <span class="nav-btn {architect_active}"
+              onclick="window.location.href='?page=architect'"
+              id="btn-architect">👔 &nbsp;Attire Architect</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# ── HERO ───────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="hero-banner">
     <div class="hero-logo-ring">✦</div>
-    <h1 class="hero-title">AURA<span>STYLE</span> AI</h1>
-    <p class="hero-subtitle">Advanced AI-Powered Fashion Personalized Recommendation System</p>
+    <h1 class="hero-title">Advanced AI-Powered Fashion Personalized Recommendation System</h1>
+    <p class="hero-subtitle">The Premier Destination for AI-Driven Fashion Recommendations</p>
     <div class="hero-divider"></div>
 </div>
 """, unsafe_allow_html=True)
- 
- 
-# ── SIDEBAR ──────────────────────────────────────────────────────────────────────
-st.sidebar.markdown("""
-<div style="padding:1.2rem 0 0.5rem; text-align:center;">
-    <div style="font-family:'Cormorant Garamond',serif; font-size:1.1rem;
-                letter-spacing:0.2em; color:#c5a869; text-transform:uppercase;">
-        ✦ Navigate
-    </div>
-    <div style="height:1px; background:linear-gradient(90deg,transparent,rgba(197,168,105,0.3),transparent);
-                margin:0.8rem 0 1.2rem;"></div>
-</div>
-""", unsafe_allow_html=True)
- 
-menu   = ["🏠  Home Gallery", "🔎  Advanced Search", "👔  Attire Architect"]
-choice = st.sidebar.selectbox("Menu", menu, label_visibility="collapsed")
- 
- 
-# ── PRODUCT CARD ─────────────────────────────────────────────────────────────────
+
+# ── HANDLE QUERY PARAM PAGE SWITCHING ─────────────────────────────────────────
+params = st.query_params
+if "page" in params:
+    if params["page"] in ["search", "architect"]:
+        st.session_state.active_page = params["page"]
+
+page = st.session_state.active_page
+
+
+# ── STREAMLIT NAV BUTTONS (hidden but functional for state switching) ──────────
+col_s, col_a, _ = st.columns([1, 1, 4])
+with col_s:
+    if st.button("🔎  Advanced Search", use_container_width=True):
+        st.session_state.active_page = "search"
+        st.rerun()
+with col_a:
+    if st.button("👔  Attire Architect", use_container_width=True):
+        st.session_state.active_page = "architect"
+        st.rerun()
+
+st.markdown("<hr style='margin: 0.5rem 0 1.5rem;'>", unsafe_allow_html=True)
+
+
+# ── PRODUCT CARD ───────────────────────────────────────────────────────────────
 def product_card(row):
     image_path = row.get('image_path', None)
     name       = str(row.get('productDisplayName', ''))[:38]
     article    = str(row.get('articleType', ''))
- 
-    # Price
+
     price = row.get('price', None)
     if pd.notna(price) and price:
         price_str = f"₹{int(price):,}"
@@ -270,8 +320,7 @@ def product_card(row):
         price_str = str(row['price_tag'])
     else:
         price_str = "—"
- 
-    # Sizes
+
     sizes = row.get('available_sizes', [])
     if isinstance(sizes, list) and sizes:
         sizes_str = "  ·  ".join(sizes[:5])
@@ -279,8 +328,7 @@ def product_card(row):
             sizes_str += f"  +{len(sizes)-5}"
     else:
         sizes_str = ""
- 
-    # Image
+
     if image_path and isinstance(image_path, str) and image_path.startswith("http"):
         img_html = f'<img class="product-card-img" src="{image_path}" alt="{name}" loading="lazy">'
     elif image_path and isinstance(image_path, str) and os.path.exists(image_path):
@@ -290,7 +338,7 @@ def product_card(row):
         img_html = f'<img class="product-card-img" src="data:image/jpeg;base64,{b64}" alt="{name}">'
     else:
         img_html = '<div class="img-placeholder">◈</div>'
- 
+
     st.markdown(f"""
     <div class="product-card">
         <div class="product-card-badge">{article}</div>
@@ -302,63 +350,26 @@ def product_card(row):
         </div>
     </div>
     """, unsafe_allow_html=True)
- 
- 
+
+
 # ══════════════════════════════════════════════════════════════════════════════
-# PAGE 1 — HOME GALLERY
+# PAGE: ADVANCED SEARCH
 # ══════════════════════════════════════════════════════════════════════════════
-if "🏠" in choice:
-    st.markdown('<p class="section-header">The Collection</p>', unsafe_allow_html=True)
- 
-    if "page" not in st.session_state:
-        st.session_state.page = 0
- 
-    page_size   = 12
-    display_df  = utils.get_paginated_data(df, page_size, st.session_state.page)
-    total_pages = (len(df) - 1) // page_size + 1
- 
-    cols = st.columns(4, gap="medium")
-    for i, (_, row) in enumerate(display_df.iterrows()):
-        with cols[i % 4]:
-            product_card(row)
- 
-    st.markdown("<div style='margin-top:2rem;'></div>", unsafe_allow_html=True)
-    col_prev, col_mid, col_next = st.columns([1, 2, 1])
-    with col_prev:
-        if st.button("← Prev", use_container_width=True):
-            if st.session_state.page > 0:
-                st.session_state.page -= 1
-                st.rerun()
-    with col_mid:
-        st.markdown(
-            f"<div class='page-indicator' style='text-align:center; padding-top:0.5rem;'>"
-            f"Page {st.session_state.page + 1} of {total_pages}</div>",
-            unsafe_allow_html=True
-        )
-    with col_next:
-        if st.button("Next →", use_container_width=True):
-            if (st.session_state.page + 1) * page_size < len(df):
-                st.session_state.page += 1
-                st.rerun()
- 
- 
-# ══════════════════════════════════════════════════════════════════════════════
-# PAGE 2 — ADVANCED SEARCH
-# ══════════════════════════════════════════════════════════════════════════════
-elif "🔎" in choice:
+if page == "search":
     st.markdown('<p class="section-header">Find Your Perfect Piece</p>', unsafe_allow_html=True)
- 
+
     col1, col2, col3 = st.columns(3, gap="large")
     with col1:
-        s_gender = st.selectbox("Gender",       options=df['gender'].unique())
-        s_size   = st.selectbox("Size",          options=["All"] + all_sizes)
+        s_gender = st.selectbox("Gender",      options=df['gender'].unique())
+        s_size   = st.selectbox("Size",         options=["All"] + all_sizes)
     with col2:
-        s_type   = st.selectbox("Article Type",  options=sorted(df['articleType'].unique()))
-        s_colour = st.selectbox("Base Colour",   options=all_colours)
+        s_type   = st.selectbox("Article Type", options=sorted(df['articleType'].unique()))
+        s_colour = st.selectbox("Base Colour",  options=all_colours)
     with col3:
         s_price  = st.slider("Price Range (₹)", min_price, max_price, (min_price, max_price))
- 
+
     st.markdown("<div style='margin-top:0.5rem;'></div>", unsafe_allow_html=True)
+
     if st.button("DISCOVER →"):
         with st.spinner("Curating your selection..."):
             query   = f"{s_gender} {s_colour} {s_type}"
@@ -380,28 +391,29 @@ elif "🔎" in choice:
                     product_card(row)
         else:
             st.warning("No items match your filters. Try broadening your selections.")
- 
- 
+
+
 # ══════════════════════════════════════════════════════════════════════════════
-# PAGE 3 — ATTIRE ARCHITECT
+# PAGE: ATTIRE ARCHITECT
 # ══════════════════════════════════════════════════════════════════════════════
-elif "👔" in choice:
+elif page == "architect":
     st.markdown('<p class="section-header">Attire Architect — Build Your Full Look</p>',
                 unsafe_allow_html=True)
- 
+
     col_a, col_b = st.columns(2, gap="large")
     with col_a:
-        c_gender     = st.selectbox("Gender",       options=df['gender'].unique())
-        c_size       = st.selectbox("Size",          options=["All"] + all_sizes)
-        c_colour     = st.selectbox("Colour Theme",  options=all_colours)
-        outfit_vibe  = st.text_input("Style Vibe (e.g. Earth Tones, Monochrome)")
+        c_gender    = st.selectbox("Gender",       options=df['gender'].unique())
+        c_size      = st.selectbox("Size",          options=["All"] + all_sizes)
+        c_colour    = st.selectbox("Colour Theme",  options=all_colours)
+        outfit_vibe = st.text_input("Style Vibe  (e.g. Earth Tones, Monochrome)")
     with col_b:
         top_type    = st.selectbox("Top",       ["Tshirts", "Shirts", "Dresses"])
         bottom_type = st.selectbox("Bottom",    ["Trousers", "Jeans", "Shorts"])
         shoes_type  = st.selectbox("Footwear",  ["Casual Shoes", "Formal Shoes", "Sports Shoes"])
         acc_type    = st.selectbox("Accessory", ["Belts", "Watches", "Caps"])
- 
+
     st.markdown("<div style='margin-top:0.5rem;'></div>", unsafe_allow_html=True)
+
     if st.button("GENERATE ENSEMBLE →"):
         components = [
             ("Top",       top_type),
