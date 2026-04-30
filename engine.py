@@ -53,6 +53,10 @@ def search_with_filters(
         q_vec /= q_vec.norm(dim=-1, keepdim=True)
         q_vec = q_vec.cpu().numpy().flatten()
 
-    scores = [np.dot(q_vec, index.get_item_vector(idx)) for idx in filtered_df.index]
+    max_idx = index.get_n_items() - 1
+    scores = [
+        np.dot(q_vec, index.get_item_vector(idx)) if idx <= max_idx else -1.0
+        for idx in filtered_df.index
+    ]
     filtered_df['score'] = scores
     return filtered_df.sort_values(by='score', ascending=False)

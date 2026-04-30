@@ -120,6 +120,10 @@ div[class*="instructionsDisplay"] {
     margin: 1rem auto 0;
 }
 
+/* Push content below Streamlit header */
+.block-container { padding-top: 1rem !important; }
+[data-testid="stHeader"] { height: 0 !important; min-height: 0 !important; }
+
 /* ── Section Header ── */
 .section-header {
     font-family: 'Cormorant Garamond', serif !important;
