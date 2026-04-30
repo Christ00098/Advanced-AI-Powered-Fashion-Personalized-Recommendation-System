@@ -188,19 +188,23 @@ nav {
 .carousel-header h2 em { color: var(--gold); font-style: italic; }
 .carousel-header p { font-size: 0.88rem; line-height: 1.85; color: var(--cream-dim); }
 
-.carousel-track-wrap { overflow: hidden; }
+.carousel-track-wrap { overflow: hidden; width: 100%; }
 .carousel-track {
   display: flex;
+  width: 100%;
   transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Each slide: left text + right panel */
 .carousel-slide {
   min-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 5rem;
-  align-items: center;
+  gap: 3rem;
+  align-items: start;
+  padding: 0 2rem;
 }
 
 /* LEFT: text */
@@ -257,7 +261,9 @@ nav {
 .cs-flatlay {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.7rem;
+  gap: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 .cs-item-card {
   display: flex; flex-direction: column;
@@ -273,12 +279,12 @@ nav {
   border-bottom: 1px solid rgba(197,168,105,0.08);
 }
 .cs-item-card-img {
-  width: 100%; height: 200px;
+  width: 100%; height: 160px;
   object-fit: cover; object-position: top center;
   display: block;
 }
 .cs-item-card-ph {
-  width: 100%; height: 200px;
+  width: 100%; height: 160px;
   display: flex; align-items: center; justify-content: center;
   font-size: 2.5rem;
   background: linear-gradient(160deg, #1a1a27 0%, #12121c 100%);
