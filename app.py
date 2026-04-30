@@ -265,7 +265,7 @@ architect_active = "active" if st.session_state.active_page == "architect" else 
 
 st.markdown(f"""
 <div class="top-nav">
-    <div class="top-nav-logo">Aura<span>Style</span> AI</div>
+    <div class="top-nav-logo">Advance <span>AI</span></div>
     <div class="top-nav-btns">
         <a href="{HOME_URL}" class="nav-btn-home" target="_self">← Home</a>
         <span class="nav-btn {search_active}"
