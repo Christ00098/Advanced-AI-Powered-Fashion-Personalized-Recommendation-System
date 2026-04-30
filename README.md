@@ -1,7 +1,3 @@
-# Advance-AI-Integration-App
-ML/AI apps that solves business problem
-
-
 # Advanced AI-Powered Fashion Personalized Recommendation System
 
 ## Overview
